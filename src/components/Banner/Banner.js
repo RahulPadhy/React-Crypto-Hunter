@@ -1,5 +1,6 @@
 import { Container, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
+import Carousel from './Carousel';
 
 const useStyles = makeStyles(() => ({
     banner: {
@@ -12,6 +13,13 @@ const useStyles = makeStyles(() => ({
         paddingTop: 25,
         justifyContent: "space-around",
     },
+    tagline: {
+        display: "flex",
+        height: "40%",
+        flexDirection: "column",
+        justifyContent: "center",
+        textAlign: "center",
+    }
 }));
 
 const Banner = () => {
@@ -32,10 +40,18 @@ const Banner = () => {
                         >
                             Crypto Hunter
                         </Typography>
-                        <Typography>
+                        <Typography
+                        variant="subtitle2"
+                        style={{
+                            color: "darkgrey",
+                            textTransform: "capitalized",
+                            fontFamily: "Montserrat",
+                        }}
+                        >
                             Get All The Info Regarding Your Favourite Crypto Currency
                         </Typography>
                     </div>
+                    <Carousel />
                 </Container>
             </div>
         </>

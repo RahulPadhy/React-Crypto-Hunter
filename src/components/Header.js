@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Container, createTheme, makeStyles, MenuItem, Select, ThemeProvider, Toolbar, Typography} from "@material-ui/core";
 import { useNavigate } from 'react-router-dom';
-import { Cryptostate } from '../CryptoContext';
+import { CryptoState } from '../CryptoContext';
 
 const useStyles = makeStyles(() => ({
     title: {
@@ -17,9 +17,9 @@ const Header = () => {
     const classes = useStyles();
     const history = useNavigate();
 
-    const { currency, setCurrency } = Cryptostate();
+    const { currency, setCurrency } = CryptoState();
 
-    console.log(currency);
+    // console.log(currency);
     const darkTheme = createTheme({
         palette: {
             primary: {

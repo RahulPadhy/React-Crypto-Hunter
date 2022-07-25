@@ -22,6 +22,6 @@ useEffect(() => {
 
 export default CryptoContext;
 
-export const Cryptostate = () => {
+export const CryptoState = () => {
   return useContext(Crypto);
 };
