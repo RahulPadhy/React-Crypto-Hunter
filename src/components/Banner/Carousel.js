@@ -14,10 +14,10 @@ const useStyles = makeStyles(() => ({
   carouselItem: {
     display: "flex",
     flexDirection: "column",
-    alingItems: "center",
+    alignItems: "center",
     cursor: "pointer",
     textTransform: "uppercase",
-    width: "50%",
+    // width: "50%",
     color: "white",
   },
 }));
