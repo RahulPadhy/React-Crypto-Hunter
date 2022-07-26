@@ -59,7 +59,16 @@ const CoinsTable = () => {
     );
   };
 
-  const useStyles = makeStyles(()=> ({}));
+  const useStyles = makeStyles(()=> ({
+    row: {
+      backgroundColor: "#16171a",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "#131111",      
+      },
+      fontFamily: "Montserrat",
+    },
+  }));
 
   const classes = useStyles();
 
@@ -116,7 +125,7 @@ const CoinsTable = () => {
                                 <TableCell 
                                 component='th' 
                                 scope='row'
-                                styles={{
+                                style={{
                                     display: "flex",
                                     gap: 15,
                                 }}
