@@ -19,12 +19,14 @@ import {
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { numberWithCommas } from "./Banner/Carousel";
+import { Pagination } from "@material-ui/lab";
 
 const CoinsTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const history = useNavigate();
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
   const { currency,symbol } = CryptoState();
 
@@ -67,6 +69,11 @@ const CoinsTable = () => {
         backgroundColor: "#131111",      
       },
       fontFamily: "Montserrat",
+    },
+    pagination: {
+      "& .MuiPaginationItem-root": {
+        color: "gold",
+      },
     },
   }));
 
@@ -113,12 +120,14 @@ const CoinsTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                      {handleSearch().map((row) => {
+                      {handleSearch()
+                      .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                      .map((row) => {
                         const profit = row.price_change_percentage_24h > 0;
 
                         return (
                             <TableRow
-                            onClick={() => history.push('/coins/${row.id}')}
+                            onClick={() => navigate(`/coins/${row.id}`)}
                             className={classes.row}
                             key={row.name}
                             >
@@ -175,6 +184,20 @@ const CoinsTable = () => {
             </Table>
           )}
         </TableContainer>
+        <Pagination 
+        style={{
+          padding: 20,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+        classes={{ ul: classes.pagination }}
+        count={(handleSearch()?.length/10).toFixed(0) }
+        onChange={(_, value) => {
+          setPage(value);
+          window.scrollTo(0, 450);
+        }}
+        />
       </Container>
     </ThemeProvider>
   );

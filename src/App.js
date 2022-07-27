@@ -24,7 +24,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/coin/:id" element={<Coinpage />} />
+          <Route path="/coins/:id" element={<Coinpage />} />
 
         </Routes>
       </div>
