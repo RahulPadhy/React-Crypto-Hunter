@@ -1,47 +1,79 @@
-import { Box, Button, TextField } from '@material-ui/core';
-import React, { useState } from 'react'
+import { Box, Button, TextField } from "@material-ui/core";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { CryptoState } from "../../CryptoContext";
+import { auth } from "../../firebase";
 
 const Login = ({ handleClose }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleSubmit = () => {
+  const { setAlert } = CryptoState();
 
-    };
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      setAlert({
+        open: true,
+        message: "Password do not match",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+
+      console.log(result);
+
+      setAlert({
+        open: true,
+        message: `Log Up Sucessful. Welcome ${result.user.email}`,
+        type: "Success",
+      });
+
+      handleClose();
+
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "Error",
+      });
+      return;
+    }
+  };
   return (
     <Box
-    p={3}
-    style={{ display: 'flex', flexDirection: 'column', gap: "20px" }}
+      p={3}
+      style={{ display: "flex", flexDirection: "column", gap: "20px" }}
     >
-        <TextField
+      <TextField
         variant="outlined"
         type="email"
         label="Enter Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         fullWidth
-        />
-        <TextField
+      />
+      <TextField
         variant="outlined"
         type="password"
         label="Enter Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         fullWidth
-        />
-        
-        <Button
-        variant='contained'
-        size='large'
+      />
+
+      <Button
+        variant="contained"
+        size="large"
         style={{ backgroundColor: "#EEBC1D" }}
         onClick={handleSubmit}
-        >
-            Log In
-        </Button>
-        
-
+      >
+        Log In
+      </Button>
     </Box>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

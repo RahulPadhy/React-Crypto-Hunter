@@ -1,4 +1,4 @@
-import { LinearProgress, makeStyles, Typography,  } from '@material-ui/core';
+import { Button, LinearProgress, makeStyles, Typography,  } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { SingleCoin } from '../config/api';
@@ -7,12 +7,14 @@ import CoinInfo from '../components/CoinInfo';
 import ReactHtmlParser from 'react-html-parser';
 import axios from 'axios';
 import { numberWithCommas } from '../components/Banner/Carousel';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Coinpage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
 
-  const { currency,symbol } = CryptoState();
+  const { currency, symbol, user, watchlist, setAlert } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -24,7 +26,7 @@ const Coinpage = () => {
 
   useEffect(() => {
     fetchCoin();
-  }, []);
+  });
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -76,6 +78,30 @@ const Coinpage = () => {
       },
     }
   }));
+
+  const inWatchlist = watchlist.includes(coin?.id);
+
+  const addToWatchlist = async() => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      await setDoc(coinRef, {
+        coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+      });
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Added to the Watchlist !`,
+        type: "Success",
+      })
+      } catch (error) {
+        setAlert({
+          open: true,
+          message: error.message,
+          type: "Error",
+        })
+      }
+  };
 
   const classes = useStyles();
 
@@ -147,6 +173,20 @@ const Coinpage = () => {
               M
              </Typography>
           </span>
+          {user && (
+            <Button 
+            variant="outlined"
+            style={{
+              width: "100%",
+              height: 40,
+              backgroundColor: "#EEBC1D",
+            }}
+            onClick={addToWatchlist}
+            >
+              {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+            </Button>
+          )}
+
         </div>
       </div>
 
