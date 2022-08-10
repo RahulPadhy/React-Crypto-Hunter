@@ -26,7 +26,7 @@ const Coinpage = () => {
 
   useEffect(() => {
     fetchCoin();
-  });
+  }, []);
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -65,9 +65,11 @@ const Coinpage = () => {
       padding: 25,
       paddingTop: 10,
       width: "100%",
+      // Making it responsive
       [theme.breakpoints.down("md")]:{
         display: "flex",
-        justifyContent: "space-around",
+        flexDirection: "column",
+        alignItems: "center",
       },
       [theme.breakpoints.down("sm")]:{
         flexDirection: "column",
@@ -102,6 +104,30 @@ const Coinpage = () => {
         })
       }
   };
+
+  const removeFromWatchlist = async() => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      await setDoc(coinRef, {
+        coins: watchlist.filter((watch) => watch !== coin?.id),
+      },
+      { merge: "true" }
+      );
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Removed from the Watchlist !`,
+        type: "Success",
+      })
+      } catch (error) {
+        setAlert({
+          open: true,
+          message: error.message,
+          type: "Error",
+        })
+      }
+  }
 
   const classes = useStyles();
 
@@ -179,9 +205,9 @@ const Coinpage = () => {
             style={{
               width: "100%",
               height: 40,
-              backgroundColor: "#EEBC1D",
+              backgroundColor: inWatchlist ? "#ff0000" : "#EEBC1D",
             }}
-            onClick={addToWatchlist}
+            onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
             >
               {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
             </Button>

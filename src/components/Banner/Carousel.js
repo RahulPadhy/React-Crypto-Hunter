@@ -5,6 +5,7 @@ import { CryptoState } from "../../CryptoContext";
 import { TrendingCoins } from "../../config/api";
 import AliceCarousel from "react-alice-carousel";
 
+
 const useStyles = makeStyles(() => ({
   carousel: {
     height: "50%",
@@ -64,7 +65,9 @@ const Carousel = () => {
         </span>
         
         <span style={{ fontSize:14, fontWeignt:500 }}>
-            {symbol} {numberWithCommas(coin?.current_price.toFixed(2))}
+            {symbol} 
+            {numberWithCommas(coin?.current_price.toFixed(2))}
+            
         </span>
       </Link>
     );
